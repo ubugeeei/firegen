@@ -2,16 +2,16 @@ use std::collections::HashMap;
 
 #[derive(Debug, PartialEq)]
 pub struct FirestoreSchemaTrees {
-    pub Rules: FireStoreRule,
-    pub Documents: FireStoreDocumentNode,
-    pub Collections: FireStoreCollection,
+    pub Rules: FirestoreRule,
+    pub Documents: FirestoreDocumentNode,
+    pub Collections: FirestoreCollection,
 }
 
 /**
  * Rules
  */
 #[derive(Debug, PartialEq)]
-pub struct FireStoreRule {
+pub struct FirestoreRule {
   rule_name: String,
   rule: HashMap<RULE_TYPE, String>,
 }
@@ -27,25 +27,25 @@ pub enum RULE_TYPE {
  * Documents
  */
 #[derive(Debug, PartialEq)]
-pub struct FireStoreDocumentNode {
-  document_type: FireStoreDocumentNodeType,
-  children: Vec<Box<FireStoreDocumentNodeType>>,
+pub struct FirestoreDocumentNode {
+  document_type: FirestoreDocumentNodeType,
+  children: Vec<Box<FirestoreDocumentNodeType>>,
 }
-pub enum FireStoreDocumentNodeType {
-  FireStoreDocument(FireStoreDocument),
-  FireStoreData(FireStoreData),
+pub enum FirestoreDocumentNodeType {
+  FirestoreDocument(FirestoreDocument),
+  FirestoreData(FirestoreData),
 }
 #[derive(Debug, PartialEq)]
-pub struct FireStoreDocument {
+pub struct FirestoreDocument {
   document_name: String,
   document_value: HashMap<String, DATA_TYPE>,
 }
-pub type FireStoreData = HashMap<String, DATA_TYPE>;
+pub type FirestoreData = HashMap<String, DATA_TYPE>;
 
 /**
  * Collections
  */
-pub type FireStoreCollection = HashMap<String, String>;
+pub type FirestoreCollection = HashMap<String, String>;
 
 /**
  * Firestore base types
