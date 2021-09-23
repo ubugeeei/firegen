@@ -1,26 +1,77 @@
+# FireGen
+Generator of Firestore rules and type safe client code.  
+Setting yml and firestore schema files.
+
+```yml
+# firegen.yml
+schemaPath: ./schema/**/**.fireSchema
+export:
+  rulesPath: ./generated/firestore.rules
+  clientCodePath: ./generated/firestoreClient.ts
+
+```
+
+```ts
+// User.fireSchema
 
 /**
  * definition schema
  */
-// Collection Users: User
-// Document User {
-//   username: string
-//   mail?: string
-//   age: number
-//   todos: Todos
-// }
+Collection Users: User
+Document User {
+  username: Text
+  mail?: Text
+  age: Int
+  todos: Todos
+}
 
-// Collection Todos: Todo
-// Document Todo {
-//   id: number
-//   description: string
-//   memo?: string
-// }
+Collection Todos: Todo
+Document Todo {
+  id: Int
+  description: Text
+  memo?: Text
+  createdAt?: DateTime
+  isDone: Boolean
+}
 
 
-// =================================
-// =================================
 
+/**
+ * [WIP] Rules schema
+ */
+//ex1
+Document Todo rules TodoRules {
+  id: Int
+  description: Text
+  memo?: Text
+}
+Rule TodoRules {
+ get: request.auth != null
+ list: true
+ create: request.auth.uid == userKey
+ update: request.auth.uid == userKey
+ delete: false
+}
+
+//ex2 normalization rules
+Document Todo rules AllowReadOnlLoginUser & AllowWriteOriginalUser {
+  id: number
+  description: string
+  memo?: string
+}
+Rule AllowReadOnlLoginUser {
+  get: request.auth != null
+  list: request.auth != null
+}
+Rule AllowWriteOriginalUser {
+  create: request.auth.uid == userKey
+  update: request.auth.uid == userKey
+  delete: request.auth.uid == userKey
+}
+
+```
+
+```ts
 /**
  * export as
  */
@@ -43,14 +94,23 @@ export interface UserUpdateInput {
   age?: number
 }
 export interface Todo {
+  id: number
+  description: string
+  memo?: string
+  createdAt?: string
+  isDone: boolean
 }
 export interface TodoCreateInput {
   description: string
   memo?: string
+  createdAt?: string
+  isDone: boolean
 }
 export interface TodoUpdateInput {
   description: string
   memo?: string
+  createdAt?: string
+  isDone: boolean
 }
 
 import firebase from "firebase"
@@ -86,8 +146,9 @@ export const firestoreClient = {
   deleteTodo: async (userId: number, todoId: number) =>
     await db.collection('users').doc(userId).collection('todos').doc(todoId).delete()
 }
+```
 
-
+```ts
 /**
  * usage
  */
@@ -97,3 +158,5 @@ const todos = await firestoreClient.getTodosByUser(userId)
 
 const todoId = 22
 await firestoreClient.deleteTodo(userId, todoId)
+
+```
