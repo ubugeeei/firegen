@@ -1,7 +1,7 @@
 mod read_schema;
 fn main() {
-    let file_path = String::from("playground/schema.fireSchema");
-    let result = read_schema::read_schema(&file_path);
+    let dir_paths = vec!["playground"];
+    let result = read_schema::read_multi_schema(dir_paths);
 
-    println!("{}", result.unwrap());
+    println!("{}", result);
 }
