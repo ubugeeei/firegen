@@ -1,11 +1,3 @@
-Collection Users: User
-Document User {
-  username: Text
-  mail?: Text
-  age: Int
-  todos: Todos
-}
-
 Collection Todos: Todo
 Document Todo {
   id: Int
