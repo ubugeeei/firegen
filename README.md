@@ -114,13 +114,13 @@ export interface TodoUpdateInput {
 }
 
 import firebase from "firebase"
-const db = firebase.firestore
+const db = firebase.firestore()
 export const firestoreClient = {
   getUsers: async (): Promise<User[]> =>
-    await db.collection('users'),
+    await db.collection('users').get(),
 
   getUser: async (id: number): Promise<User> =>
-    await db.collection('users').doc(id),
+    await db.collection('users').doc(id).get(),
 
   createUser: async (input: UserCreateInput) =>
     await db.collection('users').add(input),
@@ -132,10 +132,10 @@ export const firestoreClient = {
     await db.collection('users').doc(id).delete(),
 
   getTodosByUser: async (id: number): Promise<Todo[]> =>
-    await db.collection('users').doc(id).collection('todos'),
+    await db.collection('users').doc(id).collection('todos').get(),
 
   getTodoByUser: async (userId: number, todoId: number): Promise<Todo> =>
-    await db.collection('users').doc(userId).collection('todos').doc(todoId),
+    await db.collection('users').doc(userId).collection('todos').doc(todoId).get(),
 
   createTodo: async (userId: number, input: TodoCreateInput) =>
     await db.collection('users').doc(userId).collection('todos').add(input),
