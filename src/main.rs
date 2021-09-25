@@ -1,6 +1,6 @@
-mod parse_schema_str;
-mod read_schema;
 mod schema;
+mod read_schema;
+mod parse_schema_str;
 
 #[allow(unused_imports)]
 use combine::EasyParser;
