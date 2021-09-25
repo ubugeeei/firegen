@@ -1,6 +1,23 @@
-# FireGen
-Generator of Firestore rules and type safe client code.
-Setting yml and firestore schema files.
+<div align="center">
+  <img src="https://user-images.githubusercontent.com/71201308/134777775-a850f363-60f5-4180-893b-975a2ece126c.png">
+</div>
+
+<div align="center">
+   <a href="https://github.com/Ubugeeei/firegen/actions/workflows/rust.yml">
+    <img src="https://github.com/Ubugeeei/firegen/actions/workflows/rust.yml/badge.svg" alt="Rust CI" />
+  </a>
+  
+  <p>Generator of Firestore rules and type safe client code.</p>
+</div>
+
+<br />
+
+# Usage [WIP]
+## Install from npm or curl.
+```sh
+$ npm install -g firegen
+```
+## Setting your yml.
 
 ```yml
 # firegen.yml
@@ -11,6 +28,7 @@ export:
 
 ```
 
+## Create firestore schema files.
 ```ts
 // User.fireSchema
 
@@ -58,6 +76,11 @@ Rule AllowWriteOriginalUser {
 
 ```
 
+
+## Run command to generate files.
+```sh
+$ firegen generate
+```
 ```ts
 /**
  * export as
@@ -137,7 +160,7 @@ export const firestoreClient = {
 
 ```ts
 /**
- * usage
+ * use in your project!
  */
 const userId = store.user.id
 const user = await firestoreClient.getUser(userId)
