@@ -1,4 +1,3 @@
-Collection Todos: Todo
 Document Todo {
   id: Int
   description: Text

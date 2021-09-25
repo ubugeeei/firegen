@@ -1,56 +1,39 @@
 use std::collections::HashMap;
 
+pub type FiregenCollections = Vec<FiregenCollection>;
 #[derive(Debug, PartialEq)]
-pub struct FirestoreSchemaTrees {
-    pub Rules: FirestoreRule,
-    pub Documents: FirestoreDocumentNode,
-    pub Collections: FirestoreCollection,
+struct FiregenCollection {
+    __collection_name__: String,
+    document: DocumentNode,
+    rule: Rule,
 }
 
 /**
  * Rules
  */
-#[derive(Debug, PartialEq)]
-pub struct FirestoreRule {
-  rule_name: String,
-  rule: HashMap<RULE_TYPE, String>,
-}
-pub enum RULE_TYPE {
-  get,
-  list,
-  create,
-  update,
-  delete,
+pub struct Rule {
+    __rule_name__: String,
+    get: Option<String>,
+    list: Option<String>,
+    create: Option<String>,
+    update: Option<String>,
+    delete: Option<String>,
 }
 
 /**
  * Documents
  */
-#[derive(Debug, PartialEq)]
-pub struct FirestoreDocumentNode {
-  document_type: FirestoreDocumentNodeType,
-  children: Vec<Box<FirestoreDocumentNodeType>>,
+// TODO: sub collection name対応
+pub enum DocumentNode {
+    value(DataMap),
+    children(Box<DocumentNode>),
 }
-pub enum FirestoreDocumentNodeType {
-  FirestoreDocument(FirestoreDocument),
-  FirestoreData(FirestoreData),
+pub type DataMap = HashMap<String, Hoge>;
+pub enum Hoge {
+    DataType(DataType),
+    SubCollectionName(String),
 }
-#[derive(Debug, PartialEq)]
-pub struct FirestoreDocument {
-  document_name: String,
-  document_value: HashMap<String, DATA_TYPE>,
-}
-pub type FirestoreData = HashMap<String, DATA_TYPE>;
-
-/**
- * Collections
- */
-pub type FirestoreCollection = HashMap<String, String>;
-
-/**
- * Firestore base types
- */
-pub enum DATA_TYPE {
+pub enum DataType {
     Text,
     Int,
     Float,
