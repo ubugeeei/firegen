@@ -18,8 +18,8 @@ pub struct Data {
     pub value: Value,
 }
 impl Data {
-    pub fn new(key_string: &str, value_string: &str) -> Data {
-        let key = Key::new(key_string);
+    pub fn new(key_string: &str, optional_string: &str, value_string: &str) -> Data {
+        let key = Key::new(key_string, optional_string);
         let value = match value_string {
             "Text" => FirestoreDataType::Text,
             "Int" => FirestoreDataType::Int,
@@ -51,15 +51,10 @@ pub struct Key {
     pub optional: bool,
 }
 impl Key {
-    fn new(key_string: &str) -> Key {
-        let key_tokens = key_string.split_at(key_string.len() - 1);
-        let last_str = key_tokens.1;
+    fn new(key_string: &str, optional_string: &str) -> Key {
 
-        let key_name = match last_str {
-            "?" => key_tokens.0.to_string(),
-            _ => key_string.to_string(),
-        };
-        let optional = match last_str {
+        let key_name = key_string.to_string();
+        let optional = match optional_string {
             "?" => true,
             _ => false,
         };
