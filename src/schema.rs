@@ -1,56 +1,85 @@
-use std::collections::HashMap;
-
-#[derive(Debug, PartialEq)]
-pub struct FirestoreSchemaTrees {
-    pub Rules: FirestoreRule,
-    pub Documents: FirestoreDocumentNode,
-    pub Collections: FirestoreCollection,
-}
-
 /**
- * Rules
+ * Collections
  */
+pub type Collections = Vec<Collection>;
 #[derive(Debug, PartialEq)]
-pub struct FirestoreRule {
-  rule_name: String,
-  rule: HashMap<RULE_TYPE, String>,
-}
-pub enum RULE_TYPE {
-  get,
-  list,
-  create,
-  update,
-  delete,
+pub struct Collection {
+    pub __collection_name__: String,
+    pub document: Vec<Data>,
+    pub rules_names: Vec<String>,
 }
 
 /**
  * Documents
  */
 #[derive(Debug, PartialEq)]
-pub struct FirestoreDocumentNode {
-  document_type: FirestoreDocumentNodeType,
-  children: Vec<Box<FirestoreDocumentNodeType>>,
+pub struct Data {
+    pub key: Key,
+    pub value: Value,
 }
-pub enum FirestoreDocumentNodeType {
-  FirestoreDocument(FirestoreDocument),
-  FirestoreData(FirestoreData),
+impl Data {
+    pub fn new(key_string: &str, optional_string: &str, value_string: &str) -> Data {
+        let key = Key::new(key_string, optional_string);
+        let value = match value_string {
+            "Text" => FirestoreDataType::Text,
+            "Int" => FirestoreDataType::Int,
+            "Float" => FirestoreDataType::Float,
+            "Boolean" => FirestoreDataType::Boolean,
+            "Bytes" => FirestoreDataType::Bytes,
+            "Array" => FirestoreDataType::Array,
+            "Map" => FirestoreDataType::Map,
+            "DateTime" => FirestoreDataType::DateTime,
+            "Geographical" => FirestoreDataType::Geographical,
+            "Reference" => FirestoreDataType::Reference,
+            "Null" => FirestoreDataType::Null,
+            // TODO:
+            _ => FirestoreDataType::Null,
+            // _ => Value::Data(DataType::SubCollectionName(value_string.to_string())),
+        };
+
+        Data {
+            key,
+            // TODO:
+            value: Value::Data(DataType::FirestoreDataType(value)),
+        }
+    }
 }
+
 #[derive(Debug, PartialEq)]
-pub struct FirestoreDocument {
-  document_name: String,
-  document_value: HashMap<String, DATA_TYPE>,
+pub struct Key {
+    pub name: String,
+    pub optional: bool,
 }
-pub type FirestoreData = HashMap<String, DATA_TYPE>;
+impl Key {
+    fn new(key_string: &str, optional_string: &str) -> Key {
 
-/**
- * Collections
- */
-pub type FirestoreCollection = HashMap<String, String>;
+        let key_name = key_string.to_string();
+        let optional = match optional_string {
+            "?" => true,
+            _ => false,
+        };
 
-/**
- * Firestore base types
- */
-pub enum DATA_TYPE {
+        Key {
+            name: key_name,
+            optional,
+        }
+    }
+}
+
+#[derive(Debug, PartialEq)]
+pub enum Value {
+    Data(DataType),
+    Node(Vec<Box<Data>>),
+}
+
+#[derive(Debug, PartialEq)]
+pub enum DataType {
+    FirestoreDataType(FirestoreDataType),
+    SubCollectionName(String),
+}
+
+#[derive(Debug, PartialEq)]
+pub enum FirestoreDataType {
     Text,
     Int,
     Float,
@@ -62,4 +91,18 @@ pub enum DATA_TYPE {
     Geographical,
     Reference,
     Null,
+}
+
+/**
+ * Rules
+ */
+pub type Rules = Vec<Rule>;
+#[derive(Debug, PartialEq)]
+pub struct Rule {
+    pub __rule_name__: String,
+    pub get: Option<String>,
+    pub list: Option<String>,
+    pub create: Option<String>,
+    pub update: Option<String>,
+    pub delete: Option<String>,
 }

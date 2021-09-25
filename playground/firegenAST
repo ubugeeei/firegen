@@ -1,0 +1,97 @@
+Collections [
+  Collection {
+    __collection_name__: "Users",
+    document : [
+      Data {
+        key: { name: "__document_name__", optional: false },
+        value: "User",
+      },
+      Data {
+        key: { name: "username", optional: false },
+        value: Text,
+      },
+      Data {
+        key: { name: "mail", optional: true },
+        value: Text,
+      },
+      Data {
+        key: { name: "age", optional: false },
+        value: Int,
+      },
+      Data {
+        key: { name: "todos", optional: false },
+        value: "Todo",
+      }
+    ],
+    rules_names: []
+  },
+  Collection {
+    __collection_name__: "Todos",
+    document : [
+      Data {
+        key: { name: "__document_name__", optional: false },
+        value: "Todo",
+      },
+      Data {
+        key: { name: "id", optional: false },
+        value: Int,
+      },
+      Data {
+        key: { name: "description", optional: false },
+        value: Text,
+      },
+      Data {
+        key: { name: "memo", optional: true },
+        value: Text,
+      },
+      Data {
+        key: { name: "createdAt", optional: true },
+        value: DateTime,
+      },
+      Data {
+        key: { name: "statue", optional: false },
+        value: [
+          Data {
+            key: { name: "isDone", optional: false },
+            value: Boolean,
+         },
+          Data {
+            key: { name: "completed_date", optional: false },
+            value: DateTime,
+         }
+        ]
+      }
+    ],
+    rules_names : ["AllowReadOnlyLoginUser", "AllowWriteOriginalUser"]
+  }
+]
+
+
+# 案1
+Rules: [
+  {
+    __rule_name__: "AllowReadOnlyLoginUser",
+    get: "request.auth != null",
+    list: "request.auth != null"
+  },
+  {
+    __rule_name__: "AllowWriteOriginalUser",
+    create: "request.auth.uid == user",
+    update: "request.auth.uid == user",
+    delete: "request.auth.uid == user"
+  }
+]
+
+
+# 案2
+Rules: {
+  "AllowReadOnlyLoginUser": {
+    get: "request.auth != null",
+    list: "request.auth != null"
+  },
+  "AllowWriteOriginalUser": {
+    create: "request.auth.uid == user",
+    update: "request.auth.uid == user",
+    delete: "request.auth.uid == user"
+  }
+}
