@@ -16,7 +16,7 @@ struct Collection {
  */
 #[derive(Debug, PartialEq)]
 pub struct Data {
-    key: key,
+    key: Key,
     value: Value,
 }
 pub struct key {
