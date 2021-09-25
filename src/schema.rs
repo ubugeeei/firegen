@@ -32,7 +32,7 @@ pub enum Value {
 
 #[derive(Debug, PartialEq)]
 pub enum DataType {
-    DataType(FirestoreDataType),
+    FirestoreDataType(FirestoreDataType),
     SubCollectionName(String),
 }
 
