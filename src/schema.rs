@@ -1,11 +1,9 @@
-use std::collections::HashMap;
-
 /**
  * Collections
  */
 pub type Collections = Vec<Collection>;
 #[derive(Debug, PartialEq)]
-struct Collection {
+pub struct Collection {
     pub __collection_name__: String,
     pub document: Vec<Data>,
     pub rules_names: Vec<String>,
@@ -19,18 +17,26 @@ pub struct Data {
     pub key: Key,
     pub value: Value,
 }
-pub struct key {
+
+#[derive(Debug, PartialEq)]
+pub struct Key {
     pub name: String,
-    pub optional: Boolean,
+    pub optional: bool,
 }
+
+#[derive(Debug, PartialEq)]
 pub enum Value {
-    Data(HashMap<String, DataType>),
-    Node(Vex<Box<DocumentNode>>),
+    Data(DataType),
+    Node(Vec<Box<Data>>),
 }
+
+#[derive(Debug, PartialEq)]
 pub enum DataType {
     DataType(FirestoreDataType),
     SubCollectionName(String),
 }
+
+#[derive(Debug, PartialEq)]
 pub enum FirestoreDataType {
     Text,
     Int,
