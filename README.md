@@ -81,10 +81,9 @@ Rule AllowWriteOriginalUser {
 ```sh
 $ firegen generate
 ```
+exort as
 ```ts
-/**
- * export as
- */
+// types
 export interface User {
   id: number
   username: string
@@ -122,7 +121,10 @@ export interface TodoUpdateInput {
   createdAt?: string
   isDone: boolean
 }
+```
 
+```ts
+// client code
 import firebase from "firebase"
 const db = firebase.firestore()
 export const firestoreClient = {
@@ -155,6 +157,25 @@ export const firestoreClient = {
 
   deleteTodo: async (userId: number, todoId: number) =>
     await db.collection('users').doc(userId).collection('todos').doc(todoId).delete()
+}
+```
+
+```ts
+// rules
+rules_version = '2';
+
+service cloud.firestore {
+    match /databases/{database}/documents {
+         match /users/{userId} {
+             match /todos/{todoId} {
+                 allow get: if request.auth != null
+                 allow create: if request.auth.uid == userId
+                 allow update: if request.auth.uid == userId
+                 allow delete: if request.auth.uid == userId
+             }
+             
+         }
+     }
 }
 ```
 
