@@ -1,39 +1,33 @@
 use std::collections::HashMap;
 
-pub type FiregenCollections = Vec<FiregenCollection>;
-#[derive(Debug, PartialEq)]
-struct FiregenCollection {
-    __collection_name__: String,
-    document: DocumentNode,
-    rule: Rule,
-}
-
 /**
- * Rules
+ * Collections
  */
-pub struct Rule {
-    __rule_name__: String,
-    get: Option<String>,
-    list: Option<String>,
-    create: Option<String>,
-    update: Option<String>,
-    delete: Option<String>,
+pub type Collections = Vec<Collection>;
+#[derive(Debug, PartialEq)]
+struct Collection {
+    __collection_name__: String,
+    document: Vec<Data>,
+    rules_names: Vec<String>,
 }
 
 /**
  * Documents
  */
-// TODO: sub collection name対応
-pub enum DocumentNode {
-    value(DataMap),
-    children(Box<DocumentNode>),
+#[derive(Debug, PartialEq)]
+pub struct Data {
+    key: String,
+    value: Value,
 }
-pub type DataMap = HashMap<String, Hoge>;
-pub enum Hoge {
-    DataType(DataType),
-    SubCollectionName(String),
+pub enum Value {
+    Data(HashMap<String, DataType>),
+    Node(Vex<Box<DocumentNode>>)
 }
 pub enum DataType {
+    DataType(FirestoreDataType),
+    SubCollectionName(String),
+}
+pub enum FirestoreDataType {
     Text,
     Int,
     Float,
@@ -45,4 +39,18 @@ pub enum DataType {
     Geographical,
     Reference,
     Null,
+}
+
+/**
+ * Rules
+ */
+type Rules = Vec<Rule>;
+#[derive(Debug, PartialEq)]
+pub struct Rule {
+    __rule_name__: String,
+    get: Option<String>,
+    list: Option<String>,
+    create: Option<String>,
+    update: Option<String>,
+    delete: Option<String>,
 }

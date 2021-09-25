@@ -1,0 +1,97 @@
+Collections [
+  Collection {
+    __collection_name__: "Users",
+    document : [
+      Data {
+        key : "__document_name__",
+        value : "User",
+      },
+      Data {
+        key : "username",
+        value : Text,
+      },
+      Data {
+        key : "mail?",
+        value : Text,
+      },
+      Data {
+        key : "age",
+        value : Int,
+      },
+      Data {
+        key : "todos",
+        // value : "Todo",
+      }
+    ],
+    rules_names: []
+  },
+  Collection {
+    __collection_name__: "Todos",
+    document : [
+      Data {
+        key : "__document_name__",
+        value : "Todo",
+      },
+      Data {
+        key : "id",
+        value : Int,
+      },
+      Data {
+        key : "description",
+        value : Text,
+      },
+      Data {
+        key : "memo?",
+        value : Text,
+      },
+      Data {
+        key : "createdAt?",
+        value : DateTime,
+      },
+      Data {
+        key : "statue",
+        value : [
+          Data {
+            key : "isDone",
+            value : Boolean,
+         },
+          Data {
+            key : "completed_date",
+            value : DateTime,
+         }
+        ]
+      }
+    ],
+    rules_names : ["AllowReadOnlyLoginUser", "AllowWriteOriginalUser"]
+  }
+]
+
+
+# 案1
+Rules: [
+  {
+    __rule_name__: "AllowReadOnlyLoginUser",
+    get: "request.auth != null",
+    list: "request.auth != null"
+  },
+  {
+    __rule_name__: "AllowWriteOriginalUser",
+    create: "request.auth.uid == user",
+    update: "request.auth.uid == user",
+    delete: "request.auth.uid == user"
+  }
+]
+
+
+# 案2
+Rules: {
+  "AllowReadOnlyLoginUser": {
+    get: "request.auth != null",
+    list: "request.auth != null"
+  },
+  "AllowWriteOriginalUser": {
+    create: "request.auth.uid == user",
+    update: "request.auth.uid == user",
+    delete: "request.auth.uid == user"
+  }
+}

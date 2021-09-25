@@ -3,5 +3,8 @@ Document Todo {
   description: Text
   memo?: Text
   createdAt?: DateTime
-  isDone: Boolean
+  status: {
+    isDone: Boolean,
+    completedDate: DateTime,
+  }
 }
