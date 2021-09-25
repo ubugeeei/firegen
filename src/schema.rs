@@ -6,9 +6,9 @@ use std::collections::HashMap;
 pub type Collections = Vec<Collection>;
 #[derive(Debug, PartialEq)]
 struct Collection {
-    __collection_name__: String,
-    document: Vec<Data>,
-    rules_names: Vec<String>,
+    pub __collection_name__: String,
+    pub document: Vec<Data>,
+    pub rules_names: Vec<String>,
 }
 
 /**
@@ -16,12 +16,12 @@ struct Collection {
  */
 #[derive(Debug, PartialEq)]
 pub struct Data {
-    key: Key,
-    value: Value,
+    pub key: Key,
+    pub value: Value,
 }
 pub struct key {
-    name: String,
-    optional: Boolean,
+    pub name: String,
+    pub optional: Boolean,
 }
 pub enum Value {
     Data(HashMap<String, DataType>),
@@ -51,10 +51,10 @@ pub enum FirestoreDataType {
 type Rules = Vec<Rule>;
 #[derive(Debug, PartialEq)]
 pub struct Rule {
-    __rule_name__: String,
-    get: Option<String>,
-    list: Option<String>,
-    create: Option<String>,
-    update: Option<String>,
-    delete: Option<String>,
+    pub __rule_name__: String,
+    pub get: Option<String>,
+    pub list: Option<String>,
+    pub create: Option<String>,
+    pub update: Option<String>,
+    pub delete: Option<String>,
 }
