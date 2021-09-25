@@ -66,11 +66,24 @@ mod tests {
             parse_key_value().easy_parse("id: Int")
         )
     }
-    // let expected = Data {
-    //     key: Key {
-    //         name: String::from("id"),
-    //         optional: false,
-    //     },
-    //     value: Value::Data(DataType::FirestoreDataType(FirestoreDataType::Int)),
-    // };
+
+    #[test]
+    fn test_new_data_instance() {
+        let input = "memo: Text";
+        let expected = Data {
+            key: Key {
+                name: String::from("memo"),
+                optional: false,
+            },
+            value: Value::Data(DataType::FirestoreDataType(FirestoreDataType::Text)),
+        };
+
+		// parse
+        let parse_result = parse_key_value().easy_parse(input).ok().unwrap().0;
+		let key_string = parse_result.0;
+		let value_string = parse_result.1;
+		let result = Data::new(&key_string, &value_string);
+
+        assert_eq!(expected, result)
+    }
 }
