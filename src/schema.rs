@@ -17,11 +17,58 @@ pub struct Data {
     pub key: Key,
     pub value: Value,
 }
+impl Data {
+    pub fn new(key_string: &str, value_string: &str) -> Data {
+        let key = Key::new(key_string);
+        let value = match value_string {
+            "Text" => FirestoreDataType::Text,
+            "Int" => FirestoreDataType::Int,
+            "Float" => FirestoreDataType::Float,
+            "Boolean" => FirestoreDataType::Boolean,
+            "Bytes" => FirestoreDataType::Bytes,
+            "Array" => FirestoreDataType::Array,
+            "Map" => FirestoreDataType::Map,
+            "DateTime" => FirestoreDataType::DateTime,
+            "Geographical" => FirestoreDataType::Geographical,
+            "Reference" => FirestoreDataType::Reference,
+            "Null" => FirestoreDataType::Null,
+            // TODO:
+            _ => FirestoreDataType::Null,
+            // _ => Value::Data(DataType::SubCollectionName(value_string.to_string())),
+        };
+
+        Data {
+            key,
+            // TODO:
+            value: Value::Data(DataType::FirestoreDataType(value)),
+        }
+    }
+}
 
 #[derive(Debug, PartialEq)]
 pub struct Key {
     pub name: String,
     pub optional: bool,
+}
+impl Key {
+    fn new(key_string: &str) -> Key {
+        let key_tokens = key_string.split_at(key_string.len() - 1);
+        let last_str = key_tokens.1;
+
+        let key_name = match last_str {
+            "?" => key_tokens.0.to_string(),
+            _ => key_string.to_string(),
+        };
+        let optional = match last_str {
+            "?" => true,
+            _ => false,
+        };
+
+        Key {
+            name: key_name,
+            optional,
+        }
+    }
 }
 
 #[derive(Debug, PartialEq)]
@@ -54,7 +101,7 @@ pub enum FirestoreDataType {
 /**
  * Rules
  */
-type Rules = Vec<Rule>;
+pub type Rules = Vec<Rule>;
 #[derive(Debug, PartialEq)]
 pub struct Rule {
     pub __rule_name__: String,
