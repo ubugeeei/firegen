@@ -3,24 +3,24 @@ Collections [
     __collection_name__: "Users",
     document : [
       Data {
-        key : "__document_name__",
-        value : "User",
+        key: { name: "__document_name__", optional: false },
+        value: "User",
       },
       Data {
-        key : "username",
-        value : Text,
+        key: { name: "username", optional: false },
+        value: Text,
       },
       Data {
-        key : "mail?",
-        value : Text,
+        key: { name: "mail", optional: true },
+        value: Text,
       },
       Data {
-        key : "age",
-        value : Int,
+        key: { name: "age", optional: false },
+        value: Int,
       },
       Data {
-        key : "todos",
-        // value : "Todo",
+        key: { name: "todos", optional: false },
+        value: "Todo",
       }
     ],
     rules_names: []
@@ -29,35 +29,35 @@ Collections [
     __collection_name__: "Todos",
     document : [
       Data {
-        key : "__document_name__",
-        value : "Todo",
+        key: { name: "__document_name__", optional: false },
+        value: "Todo",
       },
       Data {
-        key : "id",
-        value : Int,
+        key: { name: "id", optional: false },
+        value: Int,
       },
       Data {
-        key : "description",
-        value : Text,
+        key: { name: "description", optional: false },
+        value: Text,
       },
       Data {
-        key : "memo?",
-        value : Text,
+        key: { name: "memo", optional: true },
+        value: Text,
       },
       Data {
-        key : "createdAt?",
-        value : DateTime,
+        key: { name: "createdAt", optional: true },
+        value: DateTime,
       },
       Data {
-        key : "statue",
-        value : [
+        key: { name: "statue", optional: false },
+        value: [
           Data {
-            key : "isDone",
-            value : Boolean,
+            key: { name: "isDone", optional: false },
+            value: Boolean,
          },
           Data {
-            key : "completed_date",
-            value : DateTime,
+            key: { name: "completed_date", optional: false },
+            value: DateTime,
          }
         ]
       }

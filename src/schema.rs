@@ -16,12 +16,16 @@ struct Collection {
  */
 #[derive(Debug, PartialEq)]
 pub struct Data {
-    key: String,
+    key: key,
     value: Value,
+}
+pub struct key {
+    name: String,
+    optional: Boolean,
 }
 pub enum Value {
     Data(HashMap<String, DataType>),
-    Node(Vex<Box<DocumentNode>>)
+    Node(Vex<Box<DocumentNode>>),
 }
 pub enum DataType {
     DataType(FirestoreDataType),
