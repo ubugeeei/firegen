@@ -1,6 +1,5 @@
-mod core;
-// mod schema;
-mod read_schema;
+#[allow(unused_imports)]
+use firegen::core::{schema, read_schema::read_schema};
 mod parse_schema_str;
 
 #[allow(unused_imports)]
