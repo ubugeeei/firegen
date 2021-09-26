@@ -14,7 +14,7 @@ use combine::{
 };
 
 #[allow(unused_imports)]
-use firegen::core::schema::{Data, DataType, FirestoreDataType, Key, Value};
+use crate::core::schema::{Data, DataType, FirestoreDataType, Key, Value};
 
 /**
  * main parser
