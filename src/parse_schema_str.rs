@@ -1,3 +1,4 @@
+#[allow(unused_imports)]
 use combine::EasyParser;
 use combine::{
     // between,
@@ -12,11 +13,13 @@ use combine::{
     Stream,
 };
 
+#[allow(unused_imports)]
 use crate::schema::{Data, DataType, FirestoreDataType, Key, Value};
 
 /**
  * main parser
  */
+#[allow(unused)]
 pub fn parse_schema_str(schema_str: &str) {}
 
 /**
@@ -24,6 +27,7 @@ pub fn parse_schema_str(schema_str: &str) {}
  * ↓
  * <hash mao> {"Collections": {"Users": "User", "Todos" : "Todo"}}
  */
+#[allow(unused)]
 fn parse_schema_collection(collection_str: &str) {}
 
 /**
@@ -31,6 +35,7 @@ fn parse_schema_collection(collection_str: &str) {}
  * ↓
  * <hash mao> {"Documents": {"User": {}, "Todo" : {}}}
  */
+#[allow(unused)]
 fn parse_schema_document(document_str: &str) {}
 
 /**
@@ -41,6 +46,7 @@ fn parse_schema_document(document_str: &str) {}
  *    value: Int
  * }
  */
+#[allow(unused)]
 pub fn parse_key_value<Input>() -> impl Parser<Input, Output = (String, String, String)>
 where
     Input: Stream<Token = char>,
