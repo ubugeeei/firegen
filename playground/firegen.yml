@@ -1,0 +1,7 @@
+# firegen.yml
+schemaPath: schema/**/**.fireSchema
+export:
+  rulesPath: generated/firestore.rules
+  target: ts
+  clientCodePath: generated/firestoreClient.ts
+  typesPath: generated/firestoreClient.d.ts

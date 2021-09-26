@@ -1,5 +1,5 @@
 #[allow(unused_imports)]
-use firegen::core::{schema, parser};
+use firegen::core::{parser, schema};
 use firegen::reader::read_schema;
 
 #[allow(unused_imports)]
