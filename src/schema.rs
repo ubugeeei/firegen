@@ -19,28 +19,32 @@ pub struct Data {
 }
 impl Data {
     pub fn new(key_string: &str, optional_string: &str, value_string: &str) -> Data {
+        // fn type_of<T>(_: T) -> String {
+        //     std::any::type_name::<T>().to_string()
+        // }
+
         let key = Key::new(key_string, optional_string);
-        let value = match value_string {
-            "Text" => FirestoreDataType::Text,
-            "Int" => FirestoreDataType::Int,
-            "Float" => FirestoreDataType::Float,
-            "Boolean" => FirestoreDataType::Boolean,
-            "Bytes" => FirestoreDataType::Bytes,
-            "Array" => FirestoreDataType::Array,
-            "Map" => FirestoreDataType::Map,
-            "DateTime" => FirestoreDataType::DateTime,
-            "Geographical" => FirestoreDataType::Geographical,
-            "Reference" => FirestoreDataType::Reference,
-            "Null" => FirestoreDataType::Null,
-            // TODO:
-            _ => FirestoreDataType::Null,
-            // _ => Value::Data(DataType::SubCollectionName(value_string.to_string())),
+        let value: DataType = match value_string {
+            "Text" => DataType::FirestoreDataType(FirestoreDataType::Text),
+            "Int" => DataType::FirestoreDataType(FirestoreDataType::Int),
+            "Float" => DataType::FirestoreDataType(FirestoreDataType::Float),
+            "Boolean" => DataType::FirestoreDataType(FirestoreDataType::Boolean),
+            "Bytes" => DataType::FirestoreDataType(FirestoreDataType::Bytes),
+            "Array" => DataType::FirestoreDataType(FirestoreDataType::Array),
+            "Map" => DataType::FirestoreDataType(FirestoreDataType::Map),
+            "DateTime" => DataType::FirestoreDataType(FirestoreDataType::DateTime),
+            "Geographical" => DataType::FirestoreDataType(FirestoreDataType::Geographical),
+            "Reference" => DataType::FirestoreDataType(FirestoreDataType::Reference),
+            "Null" => DataType::FirestoreDataType(FirestoreDataType::Null),
+            _ => {
+                DataType::SubCollectionName(value_string.to_string())
+                // TODO: #14 nested data
+            }
         };
 
         Data {
             key,
-            // TODO:
-            value: Value::Data(DataType::FirestoreDataType(value)),
+            value: Value::Data(value),
         }
     }
 }
@@ -52,7 +56,6 @@ pub struct Key {
 }
 impl Key {
     fn new(key_string: &str, optional_string: &str) -> Key {
-
         let key_name = key_string.to_string();
         let optional = match optional_string {
             "?" => true,

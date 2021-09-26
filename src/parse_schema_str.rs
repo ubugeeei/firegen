@@ -58,6 +58,9 @@ where
         many::<String, _, _>(space().or(newline())),
         char(':'),
         many::<String, _, _>(space().or(newline())),
+        // TODO: ここletterじゃダメ
+        // パターン1 letter
+        // パターン2 ブラケット、再帰
         many1::<String, _, _>(letter()),
     )
         .map(|v| (v.0, v.1, v.5))
@@ -111,6 +114,27 @@ mod tests {
                 optional: true,
             },
             value: Value::Data(DataType::FirestoreDataType(FirestoreDataType::Text)),
+        };
+
+        // parse
+        let parse_result = parse_key_value().easy_parse(input).ok().unwrap().0;
+        let key_string = parse_result.0;
+        let optional_string = parse_result.1;
+        let value_string = parse_result.2;
+        let result = Data::new(&key_string, &optional_string, &value_string);
+
+        assert_eq!(expected, result)
+    }
+
+    #[test]
+    fn test_new_data_instance_sub_collection() {
+        let input = "todos?: Todo";
+        let expected = Data {
+            key: Key {
+                name: String::from("todos"),
+                optional: true,
+            },
+            value: Value::Data(DataType::SubCollectionName("Todo".to_string())),
         };
 
         // parse
