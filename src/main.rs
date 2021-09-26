@@ -1,6 +1,6 @@
-mod schema;
-mod read_schema;
-mod parse_schema_str;
+#[allow(unused_imports)]
+use firegen::core::{schema, parser};
+use firegen::reader::read_schema;
 
 #[allow(unused_imports)]
 use combine::EasyParser;
