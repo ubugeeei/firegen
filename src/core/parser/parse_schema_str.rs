@@ -5,16 +5,12 @@ use wasm_bindgen::prelude::*;
 #[allow(unused_imports)]
 use combine::EasyParser;
 use combine::{
-    // between,
+    between,
     error::ParseError,
-    many,
-    many1,
+    many, many1, optional,
     parser::char::char,
     parser::char::{letter, newline, space},
-    // satisfy,
-    // sep_by,
-    Parser,
-    Stream,
+    satisfy, Parser, Stream,
 };
 
 #[allow(unused_imports)]
@@ -56,16 +52,20 @@ where
     Input: Stream<Token = char>,
     Input::Error: ParseError<Input::Token, Input::Range, Input::Position>,
 {
+    let key_string_token = many1::<String, _, _>(letter());
+    let optional_string_token = many::<String, _, _>(char('?').or(space().or(newline())));
+    let value_token = many1::<String, _, _>(letter()).or(between(
+        char('{'),
+        char('}'),
+        many1::<String, _, _>(satisfy(|c: char| c != '}')),
+    ));
     (
-        many1::<String, _, _>(letter()),
-        many::<String, _, _>(char('?').or(space().or(newline()))),
+        key_string_token,
+        optional_string_token,
         many::<String, _, _>(space().or(newline())),
         char(':'),
         many::<String, _, _>(space().or(newline())),
-        // TODO: ここletterじゃダメ
-        // パターン1 letter
-        // パターン2 ブラケット、再帰
-        many1::<String, _, _>(letter()),
+        value_token,
     )
         .map(|v| (v.0, v.1, v.5))
 }
@@ -149,5 +149,15 @@ mod tests {
         let result = Data::new(&key_string, &optional_string, &value_string);
 
         assert_eq!(expected, result)
+    }
+
+    #[test]
+    fn test_parse_nested_key_value() {
+        let input = "status: {isDone: Boolean\ncompletedDate: DateTime}";
+
+        assert_eq!(
+            Ok((("status".to_string(), "".to_string(), "isDone: Boolean\ncompletedDate: DateTime".to_string()), "")),
+            parse_key_value().easy_parse(input)
+        )
     }
 }
