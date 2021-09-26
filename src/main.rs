@@ -1,5 +1,6 @@
 #[allow(unused_imports)]
-use firegen::core::{schema, read_schema::read_schema, parser};
+use firegen::core::{schema, parser};
+use firegen::reader::read_schema;
 
 #[allow(unused_imports)]
 use combine::EasyParser;
