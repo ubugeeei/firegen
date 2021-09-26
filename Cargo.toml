@@ -11,3 +11,4 @@ crate-type = ["cdylib", "rlib"]
 [dependencies]
 combine = "4.6.0"
 wasm-bindgen = "0.2"
+yaml-rust = "0.4"
