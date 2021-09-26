@@ -1,0 +1,17 @@
+{
+  "name": "firegen",
+  "version": "0.1.0-beta",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Ubugeeei/firegen"
+  },
+  "files": [
+    "firegen_bg.wasm",
+    "firegen.js",
+    "firegen_bg.js",
+    "firegen.d.ts"
+  ],
+  "module": "firegen.js",
+  "types": "firegen.d.ts",
+  "sideEffects": false
+}
